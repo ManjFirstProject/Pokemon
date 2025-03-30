@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5D4D5D672D9819BF00872557 /* MyNetworking in Frameworks */ = {isa = PBXBuildFile; productRef = 5D4D5D662D9819BF00872557 /* MyNetworking */; };
+		5DD645602D9966CF0038AF4F /* Branding in Frameworks */ = {isa = PBXBuildFile; productRef = 5DD6455F2D9966CF0038AF4F /* Branding */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +33,7 @@
 		5D4D5D302D98158000872557 /* PokemonTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PokemonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D4D5D3A2D98158000872557 /* PokemonUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PokemonUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D4D5D642D9818BF00872557 /* MyNetworking */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MyNetworking; path = ../MyNetworking; sourceTree = SOURCE_ROOT; };
+		5DD6455E2D99638E0038AF4F /* Branding */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Branding; path = ../Branding; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -71,6 +73,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5D4D5D672D9819BF00872557 /* MyNetworking in Frameworks */,
+				5DD645602D9966CF0038AF4F /* Branding in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,6 +97,7 @@
 		5D4D5D172D98157E00872557 = {
 			isa = PBXGroup;
 			children = (
+				5DD6455E2D99638E0038AF4F /* Branding */,
 				5D4D5D642D9818BF00872557 /* MyNetworking */,
 				5D4D5D222D98157E00872557 /* Pokemon */,
 				5D4D5D332D98158000872557 /* PokemonTests */,
@@ -141,6 +145,7 @@
 			name = Pokemon;
 			packageProductDependencies = (
 				5D4D5D662D9819BF00872557 /* MyNetworking */,
+				5DD6455F2D9966CF0038AF4F /* Branding */,
 			);
 			productName = Pokemon;
 			productReference = 5D4D5D202D98157E00872557 /* Pokemon.app */;
@@ -588,6 +593,10 @@
 		5D4D5D662D9819BF00872557 /* MyNetworking */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = MyNetworking;
+		};
+		5DD6455F2D9966CF0038AF4F /* Branding */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Branding;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

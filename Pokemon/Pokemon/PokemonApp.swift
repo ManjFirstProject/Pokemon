@@ -6,9 +6,12 @@
 //
 
 import SwiftUI
-
+import Branding
 @main
 struct PokemonApp: App {
+    init() {
+            FontLoader.loadCustomFont()
+        }
     var body: some Scene {
         WindowGroup {
             ContentView()

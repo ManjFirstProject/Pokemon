@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Branding
 
 struct ContentView: View {
     @StateObject private var viewModel = ViewModel()
@@ -13,16 +14,16 @@ struct ContentView: View {
     
     var body: some View {
         GeometryReader { geometry in
-            VStack {
-                TopView(viewModel: viewModel,
-                        optionSelected: optionSelected)
-                .frame(width: geometry.size.width, height: geometry.size.height * 0.6)
-                .background(Color.blue)
-                ButtonsView(viewModel: viewModel,
-                            optionSelected: $optionSelected)
-                .frame(width: geometry.size.width, height: geometry.size.height * 0.4)
-                .background(.gray)
-            }
+            VStack (spacing: 0) {
+                    TopView(viewModel: viewModel,
+                            optionSelected: optionSelected)
+                    .frame(width: geometry.size.width, height: geometry.size.height * 0.6)
+                    .background(Color.blue)
+                    ButtonsView(viewModel: viewModel,
+                                optionSelected: $optionSelected)
+                    .frame(width: geometry.size.width, height: geometry.size.height * 0.4)
+                    .background(.gray)
+                }
         }
     }
 }
@@ -36,7 +37,7 @@ struct TopView: View {
             if let game = viewModel.game {
                 Text("Score: \(viewModel.score)")
                     .padding(.bottom, 60)
-                    .font(.largeTitle)
+                    .font(Typography.title.font)
                     .foregroundColor(.white)
                 Image(uiImage: game.currentPokemon.image)
                     .resizable()
@@ -46,7 +47,7 @@ struct TopView: View {
                     .opacity(optionSelected ? 1.0 : 0.9)
                 
                 Text(optionSelected ? viewModel.game?.currentPokemon.name ?? "" : "")
-                    .font(.title)
+                    .font(Typography.title.font)
             } else {
                 ProgressView()
             }
@@ -86,7 +87,7 @@ struct ButtonsView: View {
                         optionSelected = false
                         try? await viewModel.nextGame()
                     }
-                })
+                }, optionSelected: optionSelected)
                 
                 GameButtonsView(title: "Reset", action: {
                     optionSelected = false
@@ -112,6 +113,7 @@ struct OptionsButtonView: View {
                 .padding()
                 .background(.yellow)
                 .foregroundStyle(.blue)
+                .font(Typography.title.font)
         }
         .disabled(optionSelected)
         .frame(width: 150, height: 60)
@@ -123,7 +125,7 @@ struct OptionsButtonView: View {
 struct GameButtonsView: View {
     var title: String
     var action: () -> Void
-    
+    var optionSelected: Bool? = true
     var body: some View {
         Button(action: {
             action()
@@ -133,10 +135,13 @@ struct GameButtonsView: View {
                 .padding()
                 .background(Color.red)
                 .foregroundStyle(.white)
-                
+                .font(Typography.title.font)
+            
         }
         .frame(width: 150, height: 60)
         .cornerRadius(10)
+        .disabled(!(optionSelected ?? false))
+        .opacity((optionSelected ?? false) ? 1 : 0.5)
     }
 }
 

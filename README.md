@@ -2,7 +2,7 @@
 # Pokémon App
 
 ## Introduction
-The Pokémon Quiz App is a fun and interactive game where users can test their knowledge of Pokémon by identifying Pokémon from images. The app fetches data from the Pokémon API and presents multiple-choice questions to the user. This project is built using SwiftUI, and async/await for smooth and responsive gameplay.
+The Pokémon App is a fun and interactive game where users can test their knowledge of Pokémon by identifying Pokémon from images. The app fetches data from the Pokémon API and presents multiple-choice questions to the user. This project is built using SwiftUI, and async/await for smooth and responsive gameplay.
 
 ## Features
 - Guess the Pokémon from the displayed image.

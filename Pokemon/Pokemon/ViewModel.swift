@@ -21,15 +21,16 @@ struct Game {
 class ViewModel: ObservableObject {
     
     let networkManager: NetworkProtocol
+    
     private var pokemons: [Pokemon] = []
     private var currentLot: [Pokemon] = []
     
     private var cancellables: Set<AnyCancellable> = []
-    @Published var score = 0
     
+    @Published var score = 0
     @Published var game: Game?
-    @Published var givenError: String?
-    @Published var selectedOption: String?
+    @Published var givenError: String? = nil
+    //@Published var selectedOption: String?
     
     @MainActor
     init(networkManager: NetworkProtocol = NetworkManager(URLSession.shared)) {
@@ -37,8 +38,7 @@ class ViewModel: ObservableObject {
         Task {
             do {
                 try await getPokemons()
-                try await nextGame()
-                result()
+                try await loadRound()
             } catch {
                 givenError = error.localizedDescription
             }
@@ -63,11 +63,11 @@ class ViewModel: ObservableObject {
     }
     
     @MainActor
-    func nextGame() async throws {
+    func loadRound() async throws {
         currentLot = Array(pokemons.shuffled().prefix(4))
         do {
             guard let pokemon = currentLot.shuffled().first else {
-                return
+                throw AuthError.coding
             }
             
             let components = pokemon.url.split(separator: "/").filter { !$0.isEmpty }
@@ -76,30 +76,30 @@ class ViewModel: ObservableObject {
             }
             let pokemonImage = try await imageLoader(imageId: String(pokemonId))
             
-            game = Game(currentPokemon: (pokemon.name, pokemonImage),
+            game = Game(currentPokemon: (pokemon.name,
+                                         pokemonImage),
                         option1: currentLot[0].name,
                         option2: currentLot[1].name,
                         option3: currentLot[2].name,
                         option4: currentLot[3].name)
             
         } catch {
+            givenError = AuthError.network.localizedDescription
             throw AuthError.network
         }
     }
     
-    private func result() {
-        $selectedOption
-            .compactMap { $0 }
-            .sink { [weak self] option in
-                if option == self?.game?.currentPokemon.name {
-                    self?.score += 1
-                }
-            }
-            .store(in: &cancellables)
+    func result(with selectionOption: String?) {
+        if selectionOption == game?.currentPokemon.name {
+            score += 1
+        }
     }
     
     func reset() {
         score = 0
+        Task {
+          try? await loadRound()
+        }
     }
     
     private func imageLoader(imageId: String) async throws -> UIImage {

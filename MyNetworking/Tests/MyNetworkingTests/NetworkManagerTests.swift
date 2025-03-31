@@ -71,4 +71,45 @@ class NetworkManagerTests: XCTestCase {
             XCTAssertEqual(error, .error(error: "The operation couldn’t be completed. (NetworkError error 500.)"))
         }
     }
+    
+    func testRequestWithParameters() async throws {
+        let mockEndPoint = MockEndPoint(path: "/test-path",
+                                        httpMethod: .post,
+                                        bodyParameters: ["key": "value"],
+                                        additionalHeaders: ["Authorization": "Bearer token"])
+
+        // Create the mock session and router
+        let mockSession = MockURLSession()
+        let router = Router<MockEndPoint>(currentSession: mockSession)
+        
+        // Simulate mock response data
+        mockSession.data = Data("{\"key\": \"value\"}".utf8)
+        mockSession.response = URLResponse()
+
+        // Make the request
+        let result = try await router.request(mockEndPoint)
+        
+        // Assert that the data is returned correctly
+        XCTAssertEqual(String(data: result.0, encoding: .utf8), "{\"key\": \"value\"}")
+
+    }
+    
+    func testRequestThrowsError() async throws {
+        let mockEndPoint = MockEndPoint(path: "/test-path", httpMethod: .get)
+        
+        // Create the mock session and router
+        let mockSession = MockURLSession()
+        let router = Router<MockEndPoint>(currentSession: mockSession)
+        
+        // Simulate a network error
+        let expectedError = NSError(domain: "NetworkError", code: 500, userInfo: nil)
+        mockSession.error = expectedError
+        
+        do {
+            _ = try await router.request(mockEndPoint)
+            XCTFail("Expected error but got success")
+        } catch let error as NSError {
+            XCTAssertEqual(error, expectedError)
+        }
+    }
 }

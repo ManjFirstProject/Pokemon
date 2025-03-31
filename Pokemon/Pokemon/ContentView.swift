@@ -8,6 +8,7 @@
 import SwiftUI
 import Branding
 
+// MARK: ContentView
 struct ContentView: View {
     @StateObject private var viewModel = ViewModel()
     @State private var optionSelected: Bool = false
@@ -28,6 +29,7 @@ struct ContentView: View {
     }
 }
 
+// MARK: TopView
 struct TopView: View {
     @ObservedObject var viewModel: ViewModel
     var optionSelected: Bool
@@ -38,7 +40,7 @@ struct TopView: View {
                 Text("Score: \(viewModel.score)")
                     .padding(.bottom, 60)
                     .font(Typography.title.font)
-                    .foregroundColor(.white)
+                    .foregroundColor(.yellow)
                 Image(uiImage: game.currentPokemon.image)
                     .resizable()
                     .scaledToFit()
@@ -47,7 +49,8 @@ struct TopView: View {
                     .opacity(optionSelected ? 1.0 : 0.9)
                 
                 Text(optionSelected ? viewModel.game?.currentPokemon.name ?? "" : "")
-                    .font(Typography.title.font)
+                    .font(Typography.header.font)
+                    .foregroundStyle(.yellow)
             } else {
                 ProgressView()
             }
@@ -55,6 +58,7 @@ struct TopView: View {
     }
 }
 
+// MARK: ButtonsView
 struct ButtonsView: View {
     @ObservedObject var viewModel: ViewModel
     @Binding var optionSelected: Bool
@@ -63,21 +67,21 @@ struct ButtonsView: View {
         VStack (spacing: 10) {
             HStack (spacing: 30) {
                 OptionsButtonView(title: viewModel.game?.option1, action: {
-                    viewModel.selectedOption = viewModel.game?.option1
+                    viewModel.result(with: viewModel.game?.option1)
                     optionSelected = true
                 }, optionSelected: optionSelected)
                 OptionsButtonView(title: viewModel.game?.option2, action: {
-                    viewModel.selectedOption = viewModel.game?.option2
+                    viewModel.result(with: viewModel.game?.option2)
                     optionSelected = true
                 }, optionSelected: optionSelected)
             }
             HStack (spacing: 30) {
                 OptionsButtonView(title: viewModel.game?.option3, action: {
-                    viewModel.selectedOption = viewModel.game?.option3
+                    viewModel.result(with: viewModel.game?.option3)
                     optionSelected = true
                 }, optionSelected: optionSelected)
                 OptionsButtonView(title: viewModel.game?.option4, action: {
-                    viewModel.selectedOption = viewModel.game?.option4
+                    viewModel.result(with: viewModel.game?.option4)
                     optionSelected = true
                 }, optionSelected: optionSelected)
             }
@@ -85,10 +89,9 @@ struct ButtonsView: View {
                 GameButtonsView(title: "Next", action: {
                     Task {
                         optionSelected = false
-                        try? await viewModel.nextGame()
+                        try? await viewModel.loadRound()
                     }
                 }, optionSelected: optionSelected)
-                
                 GameButtonsView(title: "Reset", action: {
                     optionSelected = false
                     viewModel.reset()
@@ -99,6 +102,7 @@ struct ButtonsView: View {
     }
 }
 
+// MARK: OptionsButtonView
 struct OptionsButtonView: View {
     var title: String?
     var action: () -> Void
@@ -122,6 +126,7 @@ struct OptionsButtonView: View {
     }
 }
 
+// MARK: GameButtonsView
 struct GameButtonsView: View {
     var title: String
     var action: () -> Void
@@ -145,6 +150,7 @@ struct GameButtonsView: View {
     }
 }
 
+// MARK: Preview
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         let sampleGame = Game(currentPokemon: (name: "Option 3", image: UIImage(named: "SamplePokemon")!),

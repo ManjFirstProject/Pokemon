@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import MyNetworking
 
 public enum RestAPI: EndPointType, Sendable {
     case pokemons
@@ -15,7 +16,7 @@ public enum RestAPI: EndPointType, Sendable {
 extension RestAPI {
     
     private var environmentBaseURL: String {
-        switch NetworkManager.environment {
+        switch NetworkConfiguration.shared.environment {
         case .dev:
             return "https://pokeapi.co/api/v2/"
         case .production:
@@ -25,7 +26,7 @@ extension RestAPI {
         }
     }
     
-    var baseURL: URL {
+    public var baseURL: URL {
         switch self {
         case .pokemons:
             guard let url = URL(string: environmentBaseURL) else {
@@ -40,7 +41,7 @@ extension RestAPI {
         }
     }
     
-    var path: String {
+    public var path: String {
         switch self {
         case .pokemons:
             return "pokemon"
@@ -49,14 +50,14 @@ extension RestAPI {
         }
     }
     
-    var httpMethod: HTTPMethod {
+    public var httpMethod: HTTPMethod {
         switch self {
         case .pokemons, .image(_):
             return .get
         }
     }
     
-    func task() async -> HTTPTask {
+    public func task() async -> HTTPTask {
         switch self {
         case .pokemons:
             return .requestParameters(bodyParameters: nil,
@@ -67,7 +68,7 @@ extension RestAPI {
         }
     }
     
-    func headers() async -> HTTPHeaders? {
+    public func headers() async -> HTTPHeaders? {
         return nil
     }
 }

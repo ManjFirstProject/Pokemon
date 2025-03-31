@@ -23,22 +23,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "075B9AB7-3AE2-48DE-8196-BAE6A34F45ED"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Pokemon/ViewModel.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "114"
-            endingLineNumber = "114"
-            landmarkName = "imageLoader(imageId:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "46DA8EE9-725A-46E8-89A1-7E6CD37BB29E"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -110,40 +94,10 @@
             filePath = "Pokemon/ViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "74"
-            endingLineNumber = "74"
+            startingLineNumber = "68"
+            endingLineNumber = "68"
             landmarkName = "loadRound()"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "CEFA36CD-1E76-4ACA-A5E5-049BAC97A69B - 696c530fb51fd002"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(3) suspend resume partial function for Pokemon.ViewModel.loadRound() async throws -&gt; ()"
-                  moduleName = "Pokemon.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/manjindersingh/Desktop/Development/Pokemon/Pokemon/Pokemon/ViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "75"
-                  endingLineNumber = "75">
-               </Location>
-               <Location
-                  uuid = "CEFA36CD-1E76-4ACA-A5E5-049BAC97A69B - 28d42b270e6d0c25"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(1) suspend resume partial function for Pokemon.ViewModel.loadRound() async throws -&gt; ()"
-                  moduleName = "Pokemon.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/manjindersingh/Desktop/Development/Pokemon/Pokemon/Pokemon/ViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "74"
-                  endingLineNumber = "74">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -156,68 +110,10 @@
             filePath = "Pokemon/ViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "82"
-            endingLineNumber = "82"
+            startingLineNumber = "76"
+            endingLineNumber = "76"
             landmarkName = "loadRound()"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "1CEAE935-4C4D-430E-AECF-5632D91898BD - 28d42b270e6d0d2d"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(1) suspend resume partial function for Pokemon.ViewModel.loadRound() async throws -&gt; ()"
-                  moduleName = "Pokemon.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/manjindersingh/Desktop/Development/Pokemon/Pokemon/Pokemon/ViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "82"
-                  endingLineNumber = "82">
-               </Location>
-               <Location
-                  uuid = "1CEAE935-4C4D-430E-AECF-5632D91898BD - 28d42b270e6d0d2d"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(1) suspend resume partial function for Pokemon.ViewModel.loadRound() async throws -&gt; ()"
-                  moduleName = "Pokemon.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/manjindersingh/Desktop/Development/Pokemon/Pokemon/Pokemon/ViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "82"
-                  endingLineNumber = "82">
-               </Location>
-               <Location
-                  uuid = "1CEAE935-4C4D-430E-AECF-5632D91898BD - 49588f0380570b2a"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(4) suspend resume partial function for Pokemon.ViewModel.loadRound() async throws -&gt; ()"
-                  moduleName = "Pokemon.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/manjindersingh/Desktop/Development/Pokemon/Pokemon/Pokemon/ViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "82"
-                  endingLineNumber = "82">
-               </Location>
-               <Location
-                  uuid = "1CEAE935-4C4D-430E-AECF-5632D91898BD - 49588f0380570b2a"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(4) suspend resume partial function for Pokemon.ViewModel.loadRound() async throws -&gt; ()"
-                  moduleName = "Pokemon.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/manjindersingh/Desktop/Development/Pokemon/Pokemon/Pokemon/ViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "82"
-                  endingLineNumber = "82">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

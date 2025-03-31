@@ -6,8 +6,8 @@
 //
 
 import Foundation
+import PokemonServices
 import MyNetworking
-import UIKit
 
 struct Game {
     let currentPokemon: (name: String, url: URL)
@@ -29,7 +29,7 @@ class ViewModel: ObservableObject {
     @Published var givenError: String? = nil
     
     @MainActor
-    init(networkManager: NetworkProtocol = NetworkManager(URLSession.shared)) {
+    init(networkManager: NetworkProtocol = NetworkManager<RestAPI>(URLSession.shared)) {
         self.networkManager = networkManager
         Task {
             do {
@@ -44,14 +44,8 @@ class ViewModel: ObservableObject {
     @MainActor
     private func getPokemons() async throws {
         do {
-            let result = try await self.networkManager.requestWith(.pokemons)
-            
-            switch result {
-            case .failure(let err):
-                throw err
-            case .success(let data):
-                pokemons = try JSONDecoder().decode(PokemonResponse.self, from: data).results
-            }
+            let result = try await self.networkManager.requestWith(RestAPI.pokemons)
+            pokemons = try JSONDecoder().decode(PokemonResponse.self, from: result).results
         } catch {
             // Show error
             throw AuthError.network
@@ -93,31 +87,14 @@ class ViewModel: ObservableObject {
     func reset() {
         score = 0
         Task {
-          try? await loadRound()
+            try? await loadRound()
         }
     }
     
-   private var imageBaseURL: URL? {
+    private var imageBaseURL: URL? {
         guard let url = URL(string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/") else {
             return nil
         }
         return url
-    }
-    
-    private func imageLoader(imageId: String) async throws -> UIImage {
-        do {
-            let result = try await self.networkManager.requestWith(.image(imageId))
-            switch result {
-            case .failure(let err):
-                throw err
-            case .success(let data):
-                guard let image  = UIImage(data: data) else {
-                    throw AuthError.coding
-                }
-                return image
-            }
-        } catch {
-            throw AuthError.network
-        }
     }
 }

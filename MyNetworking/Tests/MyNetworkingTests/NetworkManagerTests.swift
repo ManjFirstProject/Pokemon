@@ -1,9 +1,38 @@
 import XCTest
 @testable import MyNetworking
 
+extension XCTestCase {
+    public func XCTAssertThrowsAsync<T>(
+        expression: @autoclosure () async throws -> T,
+        message: @autoclosure () -> String = "",
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) async {
+        do {
+            _ = try await expression()
+            XCTFail("Expected throw, but none was thrown.", file: file, line: line)
+        } catch {}
+    }
+    
+    public func XCTAssertThrowsErrorAsync<T> (
+        expression: @autoclosure () async throws -> T,
+        message: @autoclosure () -> String = "",
+        file: StaticString = #filePath,
+        line: UInt = #line,
+        completion: (Error) -> Void = { _ in}
+    ) async {
+        do {
+            _ = try await expression()
+            XCTFail("Expected throw, but none was thrown.", file: file, line: line)
+        } catch {
+            completion(error)
+        }
+    }
+}
+
 class NetworkManagerTests: XCTestCase {
     
-    var networkManager: NetworkManager!
+    var networkManager: NetworkManager<MockEndPoint>!
     var mockSession: MockURLSession!
     
     override func setUp() {
@@ -39,36 +68,26 @@ class NetworkManagerTests: XCTestCase {
                                                statusCode: 200,
                                                httpVersion: nil,
                                                headerFields: nil)
+        let endPoint = MockEndPoint.init()
         
         // When
-        let result = try await networkManager.requestWith(.pokemons)
+        let data = try await networkManager.requestWith(endPoint)
         
         // Then
-        switch result {
-        case .success(let data):
-            XCTAssertNotNil(data)
-            let response = try? JSONDecoder().decode(PokemonResponse.self, from: data)
-            XCTAssertNotNil(response)
-            XCTAssertEqual(response?.count, 1)
-            XCTAssertEqual(response?.results.first?.name, "bulbasaur")
-        case .failure:
-            XCTFail("Expected success but got failure")
-        }
+        
+        XCTAssertNotNil(data)
     }
     
     func testRequestWithFailure() async throws {
         // Given
         mockSession.error = NSError(domain: "NetworkError", code: 500, userInfo: nil)
         
+        let endPoint = MockEndPoint.init()
         // When
-        let result = try await networkManager.requestWith(.pokemons)
-        
-        // Then
-        switch result {
-        case .success:
-            XCTFail("Expected failure but got success")
-        case .failure(let error):
-            XCTAssertEqual(error, .error(error: "The operation couldn’t be completed. (NetworkError error 500.)"))
+        await XCTAssertThrowsErrorAsync(expression:  try await networkManager.requestWith(endPoint),
+                                  message: "Expected to throw an error") { error in
+            // Then
+            XCTAssertEqual(error as! AuthError, AuthError.error("The operation couldn’t be completed. (NetworkError error 500.)"))
         }
     }
     
@@ -77,7 +96,7 @@ class NetworkManagerTests: XCTestCase {
                                         httpMethod: .post,
                                         bodyParameters: ["key": "value"],
                                         additionalHeaders: ["Authorization": "Bearer token"])
-
+        
         // Create the mock session and router
         let mockSession = MockURLSession()
         let router = Router<MockEndPoint>(currentSession: mockSession)
@@ -85,13 +104,13 @@ class NetworkManagerTests: XCTestCase {
         // Simulate mock response data
         mockSession.data = Data("{\"key\": \"value\"}".utf8)
         mockSession.response = URLResponse()
-
+        
         // Make the request
         let result = try await router.request(mockEndPoint)
         
         // Assert that the data is returned correctly
         XCTAssertEqual(String(data: result.0, encoding: .utf8), "{\"key\": \"value\"}")
-
+        
     }
     
     func testRequestThrowsError() async throws {

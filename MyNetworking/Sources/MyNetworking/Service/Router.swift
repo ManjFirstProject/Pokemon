@@ -17,8 +17,7 @@ public enum NetworkEnvironment: Sendable {
 }
 
 protocol NetworkRouter: AnyObject {
-    associatedtype EndPoint: EndPointType
-    func request(_ route: EndPoint) async throws -> NetworkRouterCompletion
+    func request(_ route: EndPointType) async throws -> NetworkRouterCompletion
     func cancel()
 }
 
@@ -40,7 +39,7 @@ extension URLSession: URLSessionProtocol {
     }
 }
 
-class Router<EndPoint: EndPointType>: NetworkRouter {
+class Router<T: EndPointType>: NetworkRouter {
     
     private let session: URLSessionProtocol
     private var task: URLSessionDataTaskProtocol?
@@ -49,7 +48,7 @@ class Router<EndPoint: EndPointType>: NetworkRouter {
         self.session = session
     }
     
-    func request(_ route: EndPoint) async throws -> NetworkRouterCompletion {
+    func request(_ route: EndPointType) async throws -> NetworkRouterCompletion {
         do {
             let request = try await self.buildRequest(from: route)
             NetworkLogger.log(request: request)
@@ -65,7 +64,7 @@ class Router<EndPoint: EndPointType>: NetworkRouter {
         self.task?.cancel()
     }
     
-    fileprivate func buildRequest(from route: EndPoint) async throws -> URLRequest {
+    fileprivate func buildRequest(from route: EndPointType) async throws -> URLRequest {
         
         var request = URLRequest(url: route.baseURL.appendingPathComponent(route.path),
                                  cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,

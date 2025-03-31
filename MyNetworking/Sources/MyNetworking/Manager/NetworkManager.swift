@@ -10,46 +10,49 @@ public enum AuthError: Error, Equatable {
     case network
     case unknown
     case coding
-    case error(error: String)
+    case error(String)
+    case unauthorized
 }
 
 public protocol NetworkProtocol {
-    
-    func requestWith(_ route: RestAPI) async throws -> Result<Data, AuthError>
+    func requestWith(_ route: EndPointType) async throws -> Data
 }
 
-public class NetworkManager: NetworkProtocol {
-    
-    static let environment : NetworkEnvironment = .staging
-    
-    var router: Router<RestAPI>
+public class NetworkConfiguration {
+    nonisolated(unsafe) public static let shared = NetworkConfiguration()
+    public var environment: NetworkEnvironment = .staging
+}
+
+public class NetworkManager<T: EndPointType>: NetworkProtocol {
+
+    var router: Router<T>
     
     public init(_ session: URLSessionProtocol) {
-        router = Router<RestAPI>(currentSession: session)
+        self.router = Router<T>(currentSession: session)
     }
     
-   public func requestWith(_ route: RestAPI) async throws -> Result<Data, AuthError> {
-        
+    public func requestWith(_ route: any EndPointType) async throws -> Data {
+      
         do {
             let (data, response) = try await router.request(route)
             
-            guard let response = response as? HTTPURLResponse else {
-                return .failure(.network)
+            guard let httpResponse = response as? HTTPURLResponse else {
+                throw AuthError.network
             }
             
-            let result = self.handleNetworkResponse(response)
+            let result = self.handleNetworkResponse(httpResponse)
             switch result {
             case .success:
-                return .success(data)
+                return data
             case .failure(let error):
-                if response.statusCode == 401  { // unauthorised, refresh token handle accordingly
-                    return .failure(.error(error: error))
+                if httpResponse.statusCode == 401 {
+                    throw AuthError.unauthorized
                 }
-                return .failure(.error(error: error))
+                throw AuthError.error(error)
             }
             
-        } catch (let error) {
-            return .failure(.error(error: error.localizedDescription))
+        } catch {
+            throw AuthError.error(error.localizedDescription)
         }
     }
 }

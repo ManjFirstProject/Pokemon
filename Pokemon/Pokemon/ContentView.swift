@@ -16,14 +16,29 @@ struct ContentView: View {
     var body: some View {
         GeometryReader { geometry in
             VStack (spacing: 0) {
-                TopView(optionSelected: optionSelected,
+                TopView(optionSelected: $optionSelected,
                         score: viewModel.score,
                         url: viewModel.game?.currentPokemon.url,
                         name: viewModel.game?.currentPokemon.name)
                 .frame(width: geometry.size.width, height: geometry.size.height * 0.6)
                 .background(Color.blue)
-                ButtonsView(viewModel: viewModel,
-                            optionSelected: $optionSelected)
+                
+                ButtonsView(optionSelected: $optionSelected,
+                            option1: viewModel.game?.option1 ?? "",
+                            option2: viewModel.game?.option2 ?? "",
+                            option3: viewModel.game?.option3 ?? "",
+                            option4: viewModel.game?.option4 ?? "") { selectedOption in
+                    viewModel.result(with: selectedOption)
+                    optionSelected = true
+                } reloadAction: {
+                    optionSelected = false
+                    Task {
+                        try? await viewModel.loadRound()
+                    }
+                } resetAction: {
+                    optionSelected = false
+                    viewModel.reset()
+                }
                 .frame(width: geometry.size.width, height: geometry.size.height * 0.4)
                 .background(.gray)
             }
@@ -33,7 +48,7 @@ struct ContentView: View {
 
 // MARK: TopView
 struct TopView: View {
-    var optionSelected: Bool
+    @Binding var optionSelected: Bool
     var score: Int
     var url: URL?
     let name: String?
@@ -63,44 +78,59 @@ struct TopView: View {
 
 // MARK: ButtonsView
 struct ButtonsView: View {
-    @ObservedObject var viewModel: ViewModel
     @Binding var optionSelected: Bool
+    var option1: String
+    var option2: String
+    var option3: String
+    var option4: String
+    
+    var action: ((String) -> Void)
+    var reloadAction: (() -> Void)
+    var resetAction: (() -> Void)
     
     var body: some View {
         VStack (spacing: 10) {
             HStack (spacing: 30) {
-                OptionsButtonView(title: viewModel.game?.option1, action: {
-                    viewModel.result(with: viewModel.game?.option1)
-                    optionSelected = true
-                }, optionSelected: optionSelected)
-                OptionsButtonView(title: viewModel.game?.option2, action: {
-                    viewModel.result(with: viewModel.game?.option2)
-                    optionSelected = true
-                }, optionSelected: optionSelected)
-            }
-            HStack (spacing: 30) {
-                OptionsButtonView(title: viewModel.game?.option3, action: {
-                    viewModel.result(with: viewModel.game?.option3)
-                    optionSelected = true
-                }, optionSelected: optionSelected)
-                OptionsButtonView(title: viewModel.game?.option4, action: {
-                    viewModel.result(with: viewModel.game?.option4)
-                    optionSelected = true
-                }, optionSelected: optionSelected)
-            }
-            HStack (spacing: 30) {
-                GameButtonsView(title: "Next", action: {
-                    Task {
-                        optionSelected = false
-                        try? await viewModel.loadRound()
-                    }
-                }, optionSelected: optionSelected)
-                GameButtonsView(title: "Reset", action: {
-                    optionSelected = false
-                    viewModel.reset()
+                OptionsButtonView(title: option1, action: {
+                    action(option1)
                     
-                })
+                }, optionSelected: optionSelected)
+                OptionsButtonView(title: option2, action: {
+                    action(option1)
+                }, optionSelected: optionSelected)
             }
+            HStack (spacing: 30) {
+                OptionsButtonView(title: option3, action: {
+                    action(option1)
+                }, optionSelected: optionSelected)
+                OptionsButtonView(title: option4, action: {
+                    action(option1)
+                }, optionSelected: optionSelected)
+            }
+            
+            GameBottomButtonsView(nextAction: {
+                reloadAction()
+            }, resetAction: {
+                resetAction()
+            })
+            .opacity(optionSelected ? 1 : 0.4)
+            .disabled(!optionSelected)
+        }
+    }
+}
+
+struct GameBottomButtonsView: View {
+    var nextAction: (() -> Void)?
+    var resetAction: (() -> Void)?
+    
+    var body: some View {
+        HStack (spacing: 30) {
+            GameButtonsView(title: "Next", action: {
+                nextAction?()
+            })
+            GameButtonsView(title: "Reset", action: {
+                resetAction?()
+            })
         }
     }
 }

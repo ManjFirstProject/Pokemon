@@ -16,44 +16,47 @@ struct ContentView: View {
     var body: some View {
         GeometryReader { geometry in
             VStack (spacing: 0) {
-                    TopView(viewModel: viewModel,
-                            optionSelected: optionSelected)
-                    .frame(width: geometry.size.width, height: geometry.size.height * 0.6)
-                    .background(Color.blue)
-                    ButtonsView(viewModel: viewModel,
-                                optionSelected: $optionSelected)
-                    .frame(width: geometry.size.width, height: geometry.size.height * 0.4)
-                    .background(.gray)
-                }
+                TopView(optionSelected: optionSelected,
+                        score: viewModel.score,
+                        url: viewModel.game?.currentPokemon.url,
+                        name: viewModel.game?.currentPokemon.name)
+                .frame(width: geometry.size.width, height: geometry.size.height * 0.6)
+                .background(Color.blue)
+                ButtonsView(viewModel: viewModel,
+                            optionSelected: $optionSelected)
+                .frame(width: geometry.size.width, height: geometry.size.height * 0.4)
+                .background(.gray)
+            }
         }
     }
 }
 
 // MARK: TopView
 struct TopView: View {
-    @ObservedObject var viewModel: ViewModel
     var optionSelected: Bool
+    var score: Int
+    var url: URL?
+    let name: String?
     
     var body: some View {
         VStack {
-            if let game = viewModel.game {
-                Text("Score: \(viewModel.score)")
-                    .padding(.bottom, 60)
-                    .font(Typography.title.font)
-                    .foregroundColor(.yellow)
-                Image(uiImage: game.currentPokemon.image)
+            Text("Score: \(score)")
+                .padding(.bottom, 60)
+                .font(Typography.title.font)
+                .foregroundColor(.yellow)
+            AsyncImage(url: url) { image in
+                image
                     .resizable()
                     .scaledToFit()
                     .frame(width: 200, height: 200)
                     .colorMultiply(optionSelected ? .white : .black)
                     .opacity(optionSelected ? 1.0 : 0.9)
-                
-                Text(optionSelected ? viewModel.game?.currentPokemon.name ?? "" : "")
-                    .font(Typography.header.font)
-                    .foregroundStyle(.yellow)
-            } else {
+            } placeholder: {
                 ProgressView()
             }
+            Text(optionSelected ? (name ?? "") : "")
+                .font(Typography.header.font)
+                .foregroundStyle(.yellow)
         }
     }
 }
@@ -153,7 +156,7 @@ struct GameButtonsView: View {
 // MARK: Preview
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        let sampleGame = Game(currentPokemon: (name: "Option 3", image: UIImage(named: "SamplePokemon")!),
+        let sampleGame = Game(currentPokemon: (name: "Option 3", url: URL(string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png")!),
                               option1: "Option 1", option2: "Option 2",
                               option3: "Option 3", option4: "Option 4")
         let viewModel = ViewModel()

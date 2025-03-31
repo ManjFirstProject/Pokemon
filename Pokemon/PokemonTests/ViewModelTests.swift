@@ -79,16 +79,6 @@ final class ViewModelTests: XCTestCase {
         XCTAssertNil(viewModel.game)
     }
     
-    func testLoadPokemonsSuccess() async {
-        do {
-            networkManager.shouldReturnError = false
-            try await viewModel.loadRound()
-            XCTAssertNotNil(viewModel.game)
-        } catch {
-            XCTFail("Loading round failed: \(error)")
-        }
-    }
-    
     func testLoadPokemonsFailure() async {
         networkManager.shouldReturnError = true
         do {

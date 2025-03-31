@@ -8,10 +8,9 @@
 import Foundation
 import MyNetworking
 import UIKit
-import Combine
 
 struct Game {
-    let currentPokemon: (name: String, image: UIImage)
+    let currentPokemon: (name: String, url: URL)
     let option1: String
     let option2: String
     let option3: String
@@ -25,12 +24,9 @@ class ViewModel: ObservableObject {
     private var pokemons: [Pokemon] = []
     private var currentLot: [Pokemon] = []
     
-    private var cancellables: Set<AnyCancellable> = []
-    
     @Published var score = 0
     @Published var game: Game?
     @Published var givenError: String? = nil
-    //@Published var selectedOption: String?
     
     @MainActor
     init(networkManager: NetworkProtocol = NetworkManager(URLSession.shared)) {
@@ -71,13 +67,12 @@ class ViewModel: ObservableObject {
             }
             
             let components = pokemon.url.split(separator: "/").filter { !$0.isEmpty }
-            guard let pokemonId = components.last else {
+            guard let pokemonId = components.last, let baseUrl = imageBaseURL else {
                 throw AuthError.unknown
             }
-            let pokemonImage = try await imageLoader(imageId: String(pokemonId))
-            
+            let imageURL = baseUrl.appending(path: "\(pokemonId).png")
             game = Game(currentPokemon: (pokemon.name,
-                                         pokemonImage),
+                                         imageURL),
                         option1: currentLot[0].name,
                         option2: currentLot[1].name,
                         option3: currentLot[2].name,
@@ -100,6 +95,13 @@ class ViewModel: ObservableObject {
         Task {
           try? await loadRound()
         }
+    }
+    
+   private var imageBaseURL: URL? {
+        guard let url = URL(string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/") else {
+            return nil
+        }
+        return url
     }
     
     private func imageLoader(imageId: String) async throws -> UIImage {

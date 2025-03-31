@@ -39,6 +39,7 @@ The app follows the MVVM (Model-View-ViewModel) architecture pattern for clean s
 - **ViewModel:** Handles data fetching and game logic using async/await.
 - **ContentView:** SwiftUI components that display the game interface.
 - **MyNetworking:** Uses the `Router` and `RestAPI` to fetch data from the Pokémon API asynchronously.
+- **Branding:** Uses the `Typography` for fonts.
 
 ## Testing
 Unit tests are written using XCTest to validate the ViewModel and networking components.
@@ -62,6 +63,7 @@ Cmd + U
 - Implement a leaderboard for high scores.
 - Enhance UI with more animations and transitions.
 - Add sound effects for correct and incorrect answers.
+- Add more content to Branding module to enhance UI. 
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

@@ -1,4 +1,6 @@
 import SwiftUI
+import Networking
+
 class PokemonViewModel: ObservableObject {
     enum State {
         case initial
@@ -64,6 +66,29 @@ class PokemonViewModel: ObservableObject {
 
 private extension Error {
     var message: String {
-        ""
+        let apiError = self as? API.Error
+        let gameError = self as? GameError
+
+        // API errors
+        if let apiError = apiError {
+            switch apiError {
+            case .decode: return "Invalid data"
+            case .server: return "Something went wrong"
+            case .client: return "Something went wrong"
+            case .noConnection: return "No connection"
+            case .unauthorised: return "Not authorised"
+            }
+        }
+
+        // Not sure what these errors mean
+        if let gameError = gameError {
+            switch gameError {
+            case .coding: return "Coding issue"
+            case .network: return "Game network issue"
+            case .unknown: return "Something went wrong"
+            }
+        }
+
+        return "Something went wrong"
     }
 }

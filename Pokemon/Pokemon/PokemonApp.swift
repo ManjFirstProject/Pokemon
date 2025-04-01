@@ -6,15 +6,19 @@
 //
 
 import SwiftUI
-import Branding
+import Designs
+import PokemonGame
+
 @main
 struct PokemonApp: App {
+    // MARK: - Life cycle
     init() {
-            FontLoader.loadCustomFont()
-        }
+        _ = FontRegistry.live().register()
+    }
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            PokemonGameEntryView.build()
         }
     }
 }

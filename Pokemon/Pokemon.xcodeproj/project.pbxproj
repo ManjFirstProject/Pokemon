@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5D4D5D672D9819BF00872557 /* MyNetworking in Frameworks */ = {isa = PBXBuildFile; productRef = 5D4D5D662D9819BF00872557 /* MyNetworking */; };
-		5DD645602D9966CF0038AF4F /* Branding in Frameworks */ = {isa = PBXBuildFile; productRef = 5DD6455F2D9966CF0038AF4F /* Branding */; };
-		5DD645782D9ADE520038AF4F /* PokemonServices in Frameworks */ = {isa = PBXBuildFile; productRef = 5DD645772D9ADE520038AF4F /* PokemonServices */; };
+		6D330E552D9C74AF00F1A1DE /* PokemonGame in Frameworks */ = {isa = PBXBuildFile; productRef = 6D330E542D9C74AF00F1A1DE /* PokemonGame */; };
+		6DA9421F2D9C56BE00C54D31 /* Designs in Frameworks */ = {isa = PBXBuildFile; productRef = 6DA9421E2D9C56BE00C54D31 /* Designs */; };
+		6DA942472D9C641C00C54D31 /* Networking in Frameworks */ = {isa = PBXBuildFile; productRef = 6DA942462D9C641C00C54D31 /* Networking */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,9 +33,7 @@
 		5D4D5D202D98157E00872557 /* Pokemon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pokemon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D4D5D302D98158000872557 /* PokemonTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PokemonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D4D5D3A2D98158000872557 /* PokemonUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PokemonUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		5D4D5D642D9818BF00872557 /* MyNetworking */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MyNetworking; path = ../MyNetworking; sourceTree = SOURCE_ROOT; };
-		5DD6455E2D99638E0038AF4F /* Branding */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Branding; path = ../Branding; sourceTree = SOURCE_ROOT; };
-		5DD645762D9ACF180038AF4F /* PokemonServices */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = PokemonServices; path = ../PokemonServices; sourceTree = SOURCE_ROOT; };
+		6DA9420A2D9C4E6500C54D31 /* Module */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Module; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -74,9 +72,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5D4D5D672D9819BF00872557 /* MyNetworking in Frameworks */,
-				5DD645602D9966CF0038AF4F /* Branding in Frameworks */,
-				5DD645782D9ADE520038AF4F /* PokemonServices in Frameworks */,
+				6DA9421F2D9C56BE00C54D31 /* Designs in Frameworks */,
+				6D330E552D9C74AF00F1A1DE /* PokemonGame in Frameworks */,
+				6DA942472D9C641C00C54D31 /* Networking in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,9 +98,7 @@
 		5D4D5D172D98157E00872557 = {
 			isa = PBXGroup;
 			children = (
-				5DD645762D9ACF180038AF4F /* PokemonServices */,
-				5DD6455E2D99638E0038AF4F /* Branding */,
-				5D4D5D642D9818BF00872557 /* MyNetworking */,
+				6DA9420A2D9C4E6500C54D31 /* Module */,
 				5D4D5D222D98157E00872557 /* Pokemon */,
 				5D4D5D332D98158000872557 /* PokemonTests */,
 				5D4D5D3D2D98158000872557 /* PokemonUITests */,
@@ -148,9 +144,9 @@
 			);
 			name = Pokemon;
 			packageProductDependencies = (
-				5D4D5D662D9819BF00872557 /* MyNetworking */,
-				5DD6455F2D9966CF0038AF4F /* Branding */,
-				5DD645772D9ADE520038AF4F /* PokemonServices */,
+				6DA9421E2D9C56BE00C54D31 /* Designs */,
+				6DA942462D9C641C00C54D31 /* Networking */,
+				6D330E542D9C74AF00F1A1DE /* PokemonGame */,
 			);
 			productName = Pokemon;
 			productReference = 5D4D5D202D98157E00872557 /* Pokemon.app */;
@@ -368,6 +364,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = targeted;
 			};
 			name = Debug;
 		};
@@ -423,6 +420,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_STRICT_CONCURRENCY = targeted;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -595,17 +593,17 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		5D4D5D662D9819BF00872557 /* MyNetworking */ = {
+		6D330E542D9C74AF00F1A1DE /* PokemonGame */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = MyNetworking;
+			productName = PokemonGame;
 		};
-		5DD6455F2D9966CF0038AF4F /* Branding */ = {
+		6DA9421E2D9C56BE00C54D31 /* Designs */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = Branding;
+			productName = Designs;
 		};
-		5DD645772D9ADE520038AF4F /* PokemonServices */ = {
+		6DA942462D9C641C00C54D31 /* Networking */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = PokemonServices;
+			productName = Networking;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
